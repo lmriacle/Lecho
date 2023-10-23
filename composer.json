@@ -16,13 +16,17 @@
         }
     ],
     "require": {
-        "php": "5.6.30",
-        "topthink/framework": "^5.0"
+        "php": ">=5.6.30",
+        "topthink/framework": "^5.0",
+        "wechatpay/wechatpay": "^1.4"
     },
     "extra": {
         "think-path": "thinkphp"
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "topthink/think-installer": true
+        }
     }
 }
