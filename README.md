@@ -1,6 +1,8 @@
 ThinkPHP 5.0
 ===============
-
+这是我的毕业设计项目 基于thinkPHP5+微信小程序的项目
+感谢慕课七月老师，让我学到了很多关于编程的思想
+以及怎样学好PHP
 [![Total Downloads](https://poser.pugx.org/topthink/think/downloads)](https://packagist.org/packages/topthink/think)
 [![Latest Stable Version](https://poser.pugx.org/topthink/think/v/stable)](https://packagist.org/packages/topthink/think)
 [![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](https://packagist.org/packages/topthink/think)
