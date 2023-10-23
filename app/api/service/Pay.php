@@ -11,6 +11,7 @@ namespace app\api\service;
 use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
 use app\lib\exception\TokenException;
+use think\Config;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Exception;
@@ -20,7 +21,10 @@ use app\api\service\Token as TokenService;
 
 use app\api\model\Order as OrderModel;
 use think\exception\DbException;
+use think\Loader;
+use think\Log;
 
+Loader::import('WxPay.WxPay',EXTEND_PATH,'.Api.php');
 
 class Pay
 {
@@ -54,17 +58,66 @@ class Pay
         if (!$status['pass']){
             return $status;
         }
-
+        return $this->makeWxPreOrder($status['orderPrice']);
     }
-    private function makeWxPreOrder()
+    private function makeWxPreOrder($totalPrice)
     {
         //openid
         $openid = TokenService::getCurrentTokenVar('openid');
         if (!$openid){
             throw new TokenException();
         }
+
+        $wxOrderData = new \WxPayUnifiedOrder();
+        $wxOrderData->SetOut_trade_no($this->orderNO);
+        $wxOrderData->SetTrade_type('JSAPI');
+        $wxOrderData->SetTotal_fee($totalPrice * 100);
+        $wxOrderData->SetBody('三夏光年');
+        $wxOrderData->SetOpenid($openid);
+        $wxOrderData->SetNotify_url('http://qq.com');
+        return $this->getPaySignature($wxOrderData);
     }
 
+    private function getPaySignature($wxOrderData)
+    {
+        $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
+        // 失败时不会返回result_code
+        if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] !='SUCCESS'){
+            Log::record($wxOrder,'error');
+            Log::record('获取预支付订单失败','error');
+//            throw new Exception('获取预支付订单失败');
+        }
+        // prepay_id
+
+        $this->recordPreOrder($wxOrder);
+        $signature = $this->sign($wxOrder);
+        return $signature;
+    }
+
+    private function recordPreOrder($wxOrder){
+        // 必须是update，每次用户取消支付后再次对同一订单支付，prepay_id是不同的
+        OrderModel::where('id', '=', $this->orderID)
+            ->update(['prepay_id' => $wxOrder['prepay_id']]);
+    }
+
+    private function sign($wxOrder)
+    {
+        $jsApiPayData = new \WxPayJsApiPay();
+        $jsApiPayData->SetAppid(config('wxSetting.app_id'));
+        $jsApiPayData->SetTimeStamp((string)time());
+
+        $rand = md5(time() . mt_rand(0, 1000));
+        $jsApiPayData->SetNonceStr($rand);
+
+        $jsApiPayData->SetPackage('prepay_id='.$wxOrder['prepay_id']);
+        $jsApiPayData->SetSignType('md5');
+
+        $sign = $jsApiPayData->MakeSign();
+        $rawValues = $jsApiPayData->GetValues();
+        $rawValues['paySign'] = $sign;
+        unset($rawValues['app_id']);
+        return $rawValues;
+    }
     /**
      * @throws DataNotFoundException
      * @throws TokenException
