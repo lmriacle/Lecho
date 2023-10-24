@@ -30,10 +30,10 @@ class Order extends BaseController
         $uid = TokenService::getCurrentUid();
         $order = new OrderService();
         $status = $order->place($uid, $products);
-        return  $status;
+        return $status;
     }
 
-    public function deleteOrder()
+    public function getSummaryByUser($page=1, $size=15)
     {
 
     }
