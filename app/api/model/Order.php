@@ -14,6 +14,22 @@ class Order extends BaseModel
     //自动写入时间
     protected $autoWriteTimestamp = true;
 
+    public function getSnapItemsAttr($value)
+    {
+        if(empty($value)){
+            return null;
+        }
+        return json_decode($value);
+    }
+    // 读取器
+    public function getSnapAddressAttr($value)
+    {
+        if(empty($value)){
+            return null;
+        }
+        return json_decode($value);
+    }
+
     public static function getSummaryByUser($uid, $page = 1, $size = 15)
     {
         // Paginate::
