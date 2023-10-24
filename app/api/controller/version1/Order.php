@@ -17,6 +17,7 @@ use app\api\validate\OrderPlace;
 use app\api\validate\PagingParameter;
 use app\lib\exception\OrderException;
 use think\Exception;
+use think\exception\DbException;
 
 class Order extends BaseController
 {
@@ -25,6 +26,13 @@ class Order extends BaseController
         'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser']
     ];
 
+    /**
+     * 根据用户id分页获取订单列表（简要信息）
+     * @param int $page
+     * @param int $size
+     * @throws Exception
+     * @return array
+     */
     public function getSummaryByUser($page = 1 , $size = 15)
     {
         (new PagingParameter())->goCheck();
@@ -43,6 +51,15 @@ class Order extends BaseController
         ];
     }
 
+
+    /**
+     * 获取订单详情
+     * @param $id
+     * @return OrderModel
+     * @throws Exception
+     * @throws OrderException
+     * @throws DbException
+     */
     public function getDetail($id)
     {
         (new IDMustBePositiveInt())->goCheck();
@@ -54,6 +71,9 @@ class Order extends BaseController
     }
 
     /**
+     * 下单
+     * @url /order
+     * @HTTP POST
      * @throws Exception
      */
     public function placeOrder()
