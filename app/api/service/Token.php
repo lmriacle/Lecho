@@ -76,7 +76,7 @@ class Token
             } else {
                 throw new ForbiddenException();
             }
-        }else{
+        } else {
             throw new TokenException();
         }
     }
@@ -96,7 +96,7 @@ class Token
             } else {
                 throw new ForbiddenException();
             }
-        }else{
+        } else {
             throw new TokenException();
         }
     }
@@ -106,13 +106,23 @@ class Token
      */
     public static function isValidOperate($checkedID)
     {
-        if(!$checkedID){
+        if (!$checkedID) {
             throw new Exception('检查UID时必须传入一个被检查的UID');
         }
         $currentOperateUID = self::getCurrentUid();
-        if($checkedID == $currentOperateUID){
+        if ($checkedID == $currentOperateUID) {
             return true;
         }
         return false;
+    }
+
+    public static function verifyToken($token)
+    {
+        $exist = Cache::get($token);
+        if ($exist) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
