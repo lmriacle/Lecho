@@ -16,6 +16,7 @@ use app\api\validate\AddressNew;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\TokenException;
 use app\lib\exception\UserException;
+use app\api\model\UserAddress;
 use Exception;
 
 
@@ -33,24 +34,24 @@ class Address extends BaseController
      * Refactor the code ONE and TWO
      */
 
-/*    protected function checkPrimaryScope()
-    {
-        $scope = TokenService::getCurrentTokenVar('scope');
-        if ($scope) {
-            if ($scope >= ScopeEnum::User) {
-                return true;
-            } else {
-                throw new ForbiddenException();
+    /*    protected function checkPrimaryScope()
+        {
+            $scope = TokenService::getCurrentTokenVar('scope');
+            if ($scope) {
+                if ($scope >= ScopeEnum::User) {
+                    return true;
+                } else {
+                    throw new ForbiddenException();
+                }
+            }else{
+                throw new TokenException();
             }
-        }else{
-            throw new TokenException();
-        }
-//    two
-//    protected function checkPrimaryScope()
-//    {
-//        TokenService::needPrimaryScope();
-//    }
-    }*/
+    //    two
+    //    protected function checkPrimaryScope()
+    //    {
+    //        TokenService::needPrimaryScope();
+    //    }
+        }*/
 
     /**
      * @throws Exception
@@ -77,5 +78,23 @@ class Address extends BaseController
             $user->address->save($dataAddress);
         }
         return json(new SuccessMessage(), 201);
+    }
+
+    /**
+     * 获取用户地址信息
+     * @return UserAddress
+     * @throws UserException
+     */
+    public function getUserAddress()
+    {
+        $uid = TokenService::getCurrentUid();
+        $userAddress = UserAddress::where('user_id', $uid)->find();
+        if(!$userAddress){
+            throw new UserException([
+                'msg' => '用户地址不存在',
+                'errorCode' => 60001
+            ]);
+        }
+        return $userAddress;
     }
 }
