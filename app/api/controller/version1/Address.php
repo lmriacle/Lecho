@@ -24,7 +24,7 @@ class Address extends BaseController
 {
     protected $beforeActionList = [
         'checkPrimaryScope' => [
-            'only' => 'createOrUpdateAddress'
+            'only' => 'createOrUpdateAddress,getUserAddress'
         ]
     ];
 
