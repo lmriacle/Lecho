@@ -24,7 +24,7 @@ class Token
         // 时间戳
         // salt => 盐
         $timestamp = $_SERVER['REQUEST_TIME_FLOAT'];
-        $salt = config('secure.token.salt');
+        $salt = config('secure.token_salt');
         return md5($randChars . $timestamp . $salt);
     }
 

@@ -34,7 +34,7 @@ Route::get('api/:version/theme/:id','api/:version.Theme/getComplexOne');
 /*Route::get('api/:version/product/by_category/:id','api/:version.Product/getAllInCategory');
 Route::get('api/:version/product/:id','api/:version.Product/getOneProduct', [], ['id' => '\d+']);
 Route::get('api/:version/product/recent','api/:version.Product/getRecent');*/
-
+//Product API
 Route::group('api/:version/product', function (){
     Route::get('/by_category/:id', 'api/:version.Product/getAllInCategory');
     Route::get('/:id','api/:version.Product/getOneProduct', [], ['id' => '\d+']);
@@ -51,11 +51,12 @@ Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
 Route::post('api/:version/address', 'api/:version.Address/createOrUpdateAddress');
 
-
+//OrderAPI
 Route::get('api/:version/order/by_user', 'api/:version.Order/getSummaryByUser');
 Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id' => '\d+']);
 Route::post('api/:version/order', 'api/:version.Order/placeOrder');
 
+//Pay API
 Route::post('api/:version/pay/pre_order', 'api/:version.Pay/getPreOrder');
 Route::post('api/:version/pay/notify', 'api/:version.Pay/receiveNotify');
 Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
