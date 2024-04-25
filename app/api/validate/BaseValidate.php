@@ -69,11 +69,26 @@ class BaseValidate extends Validate
         return $newArray;
     }
 
+//    public function isMobile($value)
+//    {
+//        $rule = '^1(3|4|5|7|8)[0-9]\d{8}$^';
+//        $result = preg_match($rule, $value);
+//        if($result){
+//            return true;
+//        }
+//        return false;
+//    }
     public function isMobile($value)
     {
-        $rule = '^1(3|4|5|7|8)[0-9]\d{8}$^';
-        $result = preg_match($rule, $value);
-        if($result){
+        $mobileRule = '/^1(3|4|5|7|8)[0-9]\d{8}$/';
+        // 座机号码正则表达式
+        $phoneRule = '/^0\d{2,3}-\d{7,8}$/';
+        // 验证手机号码
+        if (preg_match($mobileRule, $value)) {
+            return true;
+        }
+        // 验证座机号码
+        if (preg_match($phoneRule, $value)) {
             return true;
         }
         return false;
