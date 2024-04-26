@@ -16,6 +16,7 @@ use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\OrderPlace;
 use app\api\validate\PagingParameter;
 use app\lib\exception\OrderException;
+use app\lib\exception\ParameterException;
 use think\Exception;
 use think\exception\DbException;
 
@@ -23,17 +24,17 @@ class Order extends BaseController
 {
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'placeOrder'],
-        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser']
+        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser']
     ];
 
     /**
      * 根据用户id分页获取订单列表（简要信息）
      * @param int $page
      * @param int $size
-     * @throws Exception
      * @return array
+     * @throws Exception
      */
-    public function getSummaryByUser($page = 1 , $size = 15)
+    public function getSummaryByUser($page = 1, $size = 15)
     {
         (new PagingParameter())->goCheck();
         $uid = TokenService::getCurrentUid();
@@ -44,7 +45,7 @@ class Order extends BaseController
                 'current_page' => $pagingOrders->getCurrentPage()
             ];
         }
-        $data = $pagingOrders->hidden(['snap_items','snap_address','prepay_id'])->toArray();
+        $data = $pagingOrders->hidden(['snap_items', 'snap_address', 'prepay_id'])->toArray();
         return [
             'data' => $data,
             'current_page' => $pagingOrders->getCurrentPage()
@@ -64,7 +65,7 @@ class Order extends BaseController
     {
         (new IDMustBePositiveInt())->goCheck();
         $orderDetail = OrderModel::get($id);
-        if(!$orderDetail){
+        if (!$orderDetail) {
             throw new OrderException();
         }
         return $orderDetail->hidden(['prepay_id']);
@@ -84,5 +85,32 @@ class Order extends BaseController
         $order = new OrderService();
         $status = $order->place($uid, $products);
         return $status;
+    }
+
+    /**
+     * 获取全部订单简要信息（分页）
+     * @param int $page
+     * @param int $size
+     * @return array
+     * @throws ParameterException
+     * @throws Exception
+     */
+    public function getSummary($page = 1, $size = 20)
+    {
+        (new PagingParameter())->goCheck();
+//        $uid = Token::getCurrentUid();
+        $pagingOrders = OrderModel::getSummaryByPage($page, $size);
+        if ($pagingOrders->isEmpty()) {
+            return [
+                'current_page' => $pagingOrders->currentPage(),
+                'data' => []
+            ];
+        }
+        $data = $pagingOrders->hidden(['snap_items', 'snap_address'])
+            ->toArray();
+        return [
+            'current_page' => $pagingOrders->currentPage(),
+            'data' => $data
+        ];
     }
 }

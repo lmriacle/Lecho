@@ -15,6 +15,7 @@ use think\exception\DbException;
 class ThirdApp extends BaseModel
 {
     protected $autoWriteTimestamp = true;
+
     /**
      * @throws ModelNotFoundException
      * @throws DbException
@@ -22,7 +23,7 @@ class ThirdApp extends BaseModel
      */
     public static function check($ac, $se)
     {
-        $app = self::where('app_id', '=', $ac)
+        $app = (new ThirdApp)->where('app_id', '=', $ac)
             ->where('app_secret', '=', $se)
             ->find();
         return $app;
