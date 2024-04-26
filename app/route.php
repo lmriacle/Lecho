@@ -46,6 +46,7 @@ Route::get('api/:version/category/all','api/:version.Category/getAllCategories')
 //Token API
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
+Route::post('api/:version/token/app','api/:version.Token/getAppToken');
 
 //Address API
 Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
