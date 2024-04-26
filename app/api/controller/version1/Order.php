@@ -17,6 +17,7 @@ use app\api\validate\OrderPlace;
 use app\api\validate\PagingParameter;
 use app\lib\exception\OrderException;
 use app\lib\exception\ParameterException;
+use app\lib\exception\SuccessMessage;
 use think\Exception;
 use think\exception\DbException;
 
@@ -112,5 +113,19 @@ class Order extends BaseController
             'current_page' => $pagingOrders->currentPage(),
             'data' => $data
         ];
+    }
+
+    /**
+     * @throws Exception
+     * 发货API
+     */
+    public function delivery($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
+        $order = new OrderService();
+        $success = $order->delivery($id);
+        if ($success) {
+            return new SuccessMessage();
+        }
     }
 }

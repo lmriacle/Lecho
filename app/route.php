@@ -57,6 +57,7 @@ Route::get('api/:version/order/by_user', 'api/:version.Order/getSummaryByUser');
 Route::get('api/:version/order/paginate','api/:version.Order/getSummary');
 Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id' => '\d+']);
 Route::post('api/:version/order', 'api/:version.Order/placeOrder');
+Route::put('api/:version/order/delivery', 'api/:version.Order/delivery');
 
 //Pay API
 Route::post('api/:version/pay/pre_order', 'api/:version.Pay/getPreOrder');
