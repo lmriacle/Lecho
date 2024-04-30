@@ -14,6 +14,8 @@ use think\exception\DbException;
 
 class Banner extends BaseModel
 {
+    // php think optimize:schema
+    // runtime/schema生成数据库缓存字段，提升性能
     protected $hidden = ['delete_time','update_time'];
     public function items()
     {
