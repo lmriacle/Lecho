@@ -23,11 +23,19 @@ use think\exception\DbException;
 
 class Order extends BaseController
 {
-    // 做库存量检测
-    // 创建顶订单
-    // 减库存（预扣除）
-    // 如果支付了，则要真的减库存，如果在一定的时间没有去支付这个订单，需要还原库存
-    // 防止无限制下单减库存
+/*   做库存量检测
+     创建顶订单
+     减库存（预扣除）
+     如果支付了，则要真的减库存，如果在一定的时间没有去支付这个订单，需要还原库存
+     防止无限制下单减库存
+解决方法：
+     在PHP中写一个定时器，每隔30分钟去遍历数据库，找到那些超时的订单，
+     把这些订单还给库存(性能不好)
+思路：
+     1.linux crontab
+     2.任务队列MQ，每当用户创建订单，把订单任务加入到队列中
+     3.redis
+*/
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'placeOrder'],
         'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser']
