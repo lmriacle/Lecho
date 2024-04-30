@@ -23,6 +23,11 @@ use think\exception\DbException;
 
 class Order extends BaseController
 {
+    // 做库存量检测
+    // 创建顶订单
+    // 减库存（预扣除）
+    // 如果支付了，则要真的减库存，如果在一定的时间没有去支付这个订单，需要还原库存
+    // 防止无限制下单减库存
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'placeOrder'],
         'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser']
@@ -52,7 +57,6 @@ class Order extends BaseController
             'current_page' => $pagingOrders->getCurrentPage()
         ];
     }
-
 
     /**
      * 获取订单详情
