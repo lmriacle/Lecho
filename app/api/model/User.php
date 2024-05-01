@@ -32,5 +32,10 @@ class User extends BaseModel
         return $user;
     }
 
+    public function updateInfo()
+    {
+
+    }
+
 
 }

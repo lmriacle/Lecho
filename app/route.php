@@ -48,6 +48,7 @@ Route::group('api/:version/product', function () {
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 Route::post('api/:version/token/app', 'api/:version.Token/getAppToken');
+Route::post('api/:version/token/wx_info', 'api/:version.Token/updateUserInfo');
 
 // Address API
 Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
@@ -64,6 +65,9 @@ Route::put('api/:version/order/delivery', 'api/:version.Order/delivery');
 Route::post('api/:version/pay/pre_order', 'api/:version.Pay/getPreOrder');
 Route::post('api/:version/pay/notify', 'api/:version.Pay/receiveNotify');
 Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
+
+// User API
+Route::post('api/:version/user/wx_info', 'api/:version.User/updateUserInfo');
 
 
 
