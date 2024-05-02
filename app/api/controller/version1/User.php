@@ -46,8 +46,7 @@ class User extends BaseController
             if ($extend) {
                 $updateData['extend'] = $extend;
             }
-
-            UserModel::update($updateData, ['id' => $uid]);
+            UserModel::updateInfo($updateData, $uid);
         }
         return json(new SuccessMessage(), 201);
     }

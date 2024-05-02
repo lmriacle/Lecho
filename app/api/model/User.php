@@ -32,9 +32,9 @@ class User extends BaseModel
         return $user;
     }
 
-    public function updateInfo()
+    public static function updateInfo($updateData, $uid)
     {
-
+        self::update($updateData, ['id' => $uid]);
     }
 
 

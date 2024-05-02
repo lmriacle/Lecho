@@ -7,6 +7,6 @@
  */
 
 return [
-    'img_prefix'      => 'http://lecho/images',
+    'img_prefix'      => 'http://quick9.shenzhuo.vip:47171/images',
     'token_expire_in' => 7200
 ];
