@@ -7,6 +7,6 @@
  */
 
 return [
-    'img_prefix'      => 'http://quick9.shenzhuo.vip:47171/images',
+    'img_prefix'      => 'http://quick9.shenzhuo.vip:30323/images',
     'token_expire_in' => 7200
 ];

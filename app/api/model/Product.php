@@ -15,8 +15,8 @@ use think\exception\DbException;
 class Product extends BaseModel
 {
     protected $hidden = [
-        'delete_time', 'main_img_id', 'pivot', 'from', 'category_id',
-        'create_time', 'update_time'
+        'delete_time', 'main_img_id', 'pivot', 'category_id',
+        'update_time'
     ];
 
     public function imgs()

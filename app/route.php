@@ -42,6 +42,7 @@ Route::group('api/:version/product', function () {
     Route::get('/:id', 'api/:version.Product/getOneProduct', [], ['id' => '\d+']);
     Route::get('/recent', 'api/:version.Product/getRecent');
 });
+Route::post('api/:version/product/add', 'api/:version.Product/addProduct');
 
 
 // Token API
