@@ -18,6 +18,7 @@ use app\lib\exception\TokenException;
 use app\lib\exception\UserException;
 use app\api\model\UserAddress;
 use Exception;
+use think\exception\DbException;
 
 
 class Address extends BaseController
@@ -89,12 +90,28 @@ class Address extends BaseController
     {
         $uid = TokenService::getCurrentUid();
         $userAddress = UserAddress::where('user_id', $uid)->find();
-        if(!$userAddress){
+        if (!$userAddress) {
             throw new UserException([
                 'msg' => '用户地址不存在',
                 'errorCode' => 60001
             ]);
         }
         return $userAddress;
+    }
+
+    /**
+     * @throws DbException
+     * @throws UserException
+     */
+    public function getAllUserAddress()
+    {
+        $allUserAddress = UserAddress::all();
+        if ($allUserAddress->isEmpty()) {
+            throw new UserException([
+                'msg' => '用户地址不存在',
+                'errorCode' => 60001
+            ]);
+        }
+        return $allUserAddress;
     }
 }

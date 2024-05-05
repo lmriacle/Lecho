@@ -16,6 +16,7 @@ class ThirdApp extends BaseModel
 {
     protected $autoWriteTimestamp = true;
 
+    protected $hidden = ['delete_time'];
     /**
      * @throws ModelNotFoundException
      * @throws DbException

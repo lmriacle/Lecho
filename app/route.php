@@ -54,6 +54,7 @@ Route::post('api/:version/token/wx_info', 'api/:version.Token/updateUserInfo');
 // Address API
 Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
 Route::post('api/:version/address', 'api/:version.Address/createOrUpdateAddress');
+Route::get('api/:version/address/allUser_address', 'api/:version.Address/getAllUserAddress');
 
 // OrderAPI
 Route::get('api/:version/order/by_user', 'api/:version.Order/getSummaryByUser');
@@ -69,6 +70,10 @@ Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
 
 // User API
 Route::post('api/:version/user/wx_info', 'api/:version.User/updateUserInfo');
+Route::get('api/:version/user/all_userinfo', 'api/:version.ThirdUser/getAllUserInfo');
+Route::get('api/:version/user/wx_user', 'api/:version.User/getUserInfo');
+
+
 
 
 

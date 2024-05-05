@@ -15,6 +15,7 @@ use app\api\service\Token as TokenService;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\UserException;
 use think\Exception;
+use think\exception\DbException;
 
 class User extends BaseController
 {
@@ -49,5 +50,18 @@ class User extends BaseController
             UserModel::updateInfo($updateData, $uid);
         }
         return json(new SuccessMessage(), 201);
+    }
+
+    /**
+     * @throws DbException
+     * @throws UserException
+     */
+    public function getUserInfo()
+    {
+        $allUserInfo = UserModel::all();
+        if ($allUserInfo->isEmpty()){
+            throw new UserException();
+        }
+        return $allUserInfo;
     }
 }

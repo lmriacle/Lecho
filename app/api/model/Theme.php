@@ -14,7 +14,7 @@ use think\exception\DbException;
 
 class Theme extends BaseModel
 {
-    protected $hidden = ['delete_time', 'update_time', 'topic_img_id', 'head_img_id'];
+    protected $hidden = ['delete_time', 'topic_img_id', 'head_img_id'];
 
     public function topicImg()
     {

@@ -10,6 +10,7 @@ namespace app\api\controller\version1;
 
 use app\api\model\Product as ProductModel;
 use app\api\validate\IDMustBePositiveInt;
+use app\lib\exception\BaseException;
 use app\lib\exception\ProductException;
 use app\lib\exception\SuccessMessage;
 use app\api\validate\Count;
@@ -39,7 +40,7 @@ class Product
     {
         (new IDMustBePositiveInt())->goCheck();
         $products = ProductModel::getProductsByCategoryID($id);
-        if($products->isEmpty()){
+        if ($products->isEmpty()) {
             throw new ProductException();
         }
         return $products->hidden(['summary']);
@@ -52,7 +53,7 @@ class Product
     {
         (new IDMustBePositiveInt())->goCheck();
         $product = ProductModel::getProductDetail($id);
-        if(!$product){
+        if (!$product) {
             throw new ProductException();
         }
         return $product;
@@ -72,9 +73,17 @@ class Product
             throw new ProductException();
         }
         // 商品存在，增加商品数量
-        $product->stock += $data['quantity'];
-        $product->from = 1;
-        $product->save();
+        if ($data['quantity'] >= 500) {
+            throw new BaseException([
+                'msg' => '亲，请检查你的参数是否正确',
+                'code' => 403,
+                'errorCode' => 10000
+            ]);
+        } else {
+            $product->stock += $data['quantity'];
+            $product->from = 1;
+            $product->save();
+        }
         return json(new SuccessMessage(), 201);
     }
 }
